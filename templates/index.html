@@ -7,16 +7,16 @@
     
 </head>
 <body> 
-    <textarea name="ta" id="Sumbit" cols="30" rows="10"> 
+    <textarea name="ta" id="results" cols="30" rows="10"> 
   
     </textarea><br> 
     Talk to AI: <input type="text" id="exp"> 
-    <input type="button" id="submit" value="Get Results"> 
+    <input type="button" id="submit" value="Ask"> 
     <script> 
         const socket = new WebSocket('ws://localhost:8000/ws/livec/'); 
         socket.onmessage = (e) => { 
             result = JSON.parse(e.data).result; 
-            document.getElementById("results").value += "llama: " + result + "\n"; 
+            document.getElementById("results").value += "Server: " + result + "\n"; 
         } 
   
         socket.onclose = (e) => { 
