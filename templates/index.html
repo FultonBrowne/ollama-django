@@ -34,7 +34,7 @@
             exp = inputfield.value 
             socket.send(JSON.stringify( 
                 { 
-                    expression: exp 
+                    prompt: exp 
                 } 
             )) 
             document.querySelector("#results").value += "You: " + exp + "\n"; 

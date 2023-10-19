@@ -1,8 +1,12 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
+from langchain.llms import Ollama
 
+class ChatChannel(WebsocketConsumer):
 
-class Channel(WebsocketConsumer):
+    def __init__(self):
+        super(ChatChannel, self).__init__()
+        self.llm = Ollama(model="llama2")
     def connect(self):
         self.accept()
 
@@ -11,8 +15,8 @@ class Channel(WebsocketConsumer):
 
     def receive(self, text_data, **kwargs):
         text_data_json = json.loads(text_data)
-        expression = text_data_json['expression']
-        result = expression
+        expression = text_data_json['prompt']
+        result = self.llm.predict(expression)
         self.send(text_data=json.dumps({
             'result': result
         }))

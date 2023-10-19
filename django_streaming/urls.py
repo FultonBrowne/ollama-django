@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django_streaming import views
-from django_streaming import channel
+from django_streaming import chatchannel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
