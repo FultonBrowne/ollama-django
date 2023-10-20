@@ -2,8 +2,6 @@
 FROM python:3.8
 
 # Set environment variables for Django
-ENV DJANGO_SETTINGS_MODULE=your_project.settings
-ENV DJANGO_SECRET_KEY=your_secret_key
 ENV DJANGO_DEBUG=False
 ENV DJANGO_ALLOWED_HOSTS=*
 ENV DJANGO_DB_HOST=db
@@ -30,4 +28,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Run Daphne ASGI server
-CMD ["daphne", "-u", "unix:/tmp/daphne.sock", "-p", "8000", "django_streaming.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "django_streaming.asgi:application"]
