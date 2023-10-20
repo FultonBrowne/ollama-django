@@ -2,11 +2,14 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from langchain.llms import Ollama
 
+from django_streaming import settings
+
+
 class ChatChannel(WebsocketConsumer):
 
     def __init__(self):
         super(ChatChannel, self).__init__()
-        self.llm = Ollama(model="llama2")
+        self.llm = Ollama(model="llama2", base_url=settings.LLMS_BASE_URL)
     def connect(self):
         self.accept()
 
