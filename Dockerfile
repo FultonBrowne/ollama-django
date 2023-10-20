@@ -30,4 +30,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Run Daphne ASGI server
-CMD ["daphne", "-u", "unix:/tmp/daphne.sock", "-p", "8000", "your_project.asgi:application"]
+CMD ["daphne", "-u", "unix:/tmp/daphne.sock", "-p", "8000", "django_streaming.asgi:application"]
