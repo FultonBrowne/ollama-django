@@ -1,7 +1,6 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
-from langchain.llms import Ollama
-
+import ollama
 from django_streaming import settings
 
 
@@ -9,7 +8,7 @@ class ChatChannel(WebsocketConsumer):
 
     def __init__(self):
         super(ChatChannel, self).__init__()
-        self.llm = Ollama(model="llama2", base_url=settings.LLMS_BASE_URL)
+        self.history = []
     def connect(self):
         self.accept()
 
@@ -19,7 +18,23 @@ class ChatChannel(WebsocketConsumer):
     def receive(self, text_data, **kwargs):
         text_data_json = json.loads(text_data)
         expression = text_data_json['prompt']
-        result = self.llm.predict(expression)
+        prompt = {'role': 'user', 'content': expression}
+        self.history.append(prompt)
+        stream = ollama.chat(
+            model='llama2',
+            messages=self.history,
+            stream=True,
+        )
+        message = {'role': 'assistant', 'content': ''}
+        for i in stream:
+            if i['done']:
+                self.history.append(message)
+            content = i['message']['content']
+            message['content'] += content
+            self.send(text_data=json.dumps({
+                'result': content
+            })) 
         self.send(text_data=json.dumps({
-            'result': result
+            'result': "DONE"
         }))
+        print(stream)

@@ -1,4 +1,4 @@
 Django
 channels
 daphne
-langchain
+ollama
